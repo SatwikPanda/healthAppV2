@@ -6,6 +6,7 @@ import { LuPlusCircle } from "react-icons/lu";
 import axios from "axios";
 import DoctorsTable from "@/components/adminDashboard/DoctorsTable";
 import AppointmentsTable from "@/components/adminDashboard/AppointmentsTable";
+import PatientCard from "@/components/adminDashboard/PatientCard";
 
 axios.defaults.baseURL = 'http://localhost:5000';
 
@@ -14,9 +15,13 @@ const AdminDashboard = () => {
     const [isDoctors, setIsDoctors] = useState(false);
     const [isAppointments, setIsAppointments] = useState(true);
 
+    const [isPatient, setIsPatient] = useState(false);
+    const [selectedPatient, setSelectedPatient] = useState<any>(null);
+
     return (
         <div className={`min-h-screen w-full bg-black p-10 text-white relative ${cardOpen ? "overflow-hidden" : ""}`}>
             {cardOpen ? <AddCard setCardOpen={setCardOpen} /> : null}
+            {isPatient ? <PatientCard PatientId={selectedPatient} setIsPatient={setIsPatient} /> : null }
             <div className="w-full flex justify-between items-center ">
                 <div className="flex gap-2">
                     <input type="text" name="search" id="" className="border border-neutral-800 rounded-md outline-none bg-black px-2 py-1 text-md"/>
@@ -35,7 +40,7 @@ const AdminDashboard = () => {
                 </div>
             </div>
             <div className="w-full border border-neutral-800 rounded-md mt-7 p-5">
-                {isAppointments ? <AppointmentsTable isAppointments={isAppointments} /> : <DoctorsTable />}
+                {isAppointments ? <AppointmentsTable isAppointments={isAppointments} setIsPatient={setIsPatient} setSelectedPatient={setSelectedPatient} /> : <DoctorsTable />}
             </div>
         </div>
     );

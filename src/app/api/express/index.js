@@ -69,6 +69,18 @@ app.post('/appointments', async (req, res) => {
       res.status(500).json({ error: err.message });
     }
   });
+
+  // 4.5) Delete an appointment by id
+  app.delete('/appointments/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+      const result = await pool.query('DELETE FROM appointments WHERE id = $1 RETURNING *', [id]);
+      if (result.rows.length === 0) return res.status(404).json({ error: 'Appointment not found' });
+      res.json(result.rows[0]);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  });
   
   // 5) Fetch patient details by id
   app.get('/appointments/:id', async (req, res) => {
