@@ -7,6 +7,8 @@ import axios from "axios";
 import DoctorsTable from "@/components/adminDashboard/DoctorsTable";
 import AppointmentsTable from "@/components/adminDashboard/AppointmentsTable";
 import PatientCard from "@/components/adminDashboard/PatientCard";
+import { FaAngleLeft } from "react-icons/fa6";
+import { useRouter } from "next/navigation";
 
 axios.defaults.baseURL = 'http://localhost:5000';
 
@@ -18,13 +20,22 @@ const AdminDashboard = () => {
     const [isPatient, setIsPatient] = useState(false);
     const [selectedPatient, setSelectedPatient] = useState<any>(null);
 
+    const router = useRouter();
+
+    const handleSignOut = () => {
+        router.back();
+    }
+
     return (
         <div className={`min-h-screen w-full bg-black p-10 text-white relative ${cardOpen ? "overflow-hidden" : ""}`}>
             {cardOpen ? <AddCard setCardOpen={setCardOpen} /> : null}
             {isPatient ? <PatientCard PatientId={selectedPatient} setIsPatient={setIsPatient} /> : null }
             <div className="w-full flex justify-between items-center ">
                 <div className="flex gap-2">
-                    <input type="text" name="search" id="" className="border border-neutral-800 rounded-md outline-none bg-black px-2 py-1 text-md"/>
+                    <button onClick={handleSignOut} className="px-4 py-2 bg-white text-black border border-neutral-800 rounded-sm flex items-center gap-2 hover:bg-neutral-300">
+                        <FaAngleLeft />
+                        Sign out
+                    </button>
                     <button onClick={() => setCardOpen(true)} className="border border-neutral-800 rounded-md px-2 py-1 flex items-center gap-2 hover:bg-neutral-700 transition">
                         <LuPlusCircle className=""/>
                         <span className="text-sm">Add doctor</span>
