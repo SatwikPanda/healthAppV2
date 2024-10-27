@@ -8,7 +8,7 @@
     "dev:electron": "concurrently \"npm run dev:next\" \"npm run dev:electron-next\"",
     "dev:next": "next dev",
     "dev:express": "nodemon src/app/api/express/index.js",
-    "build": "next build && electron-builder",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "db": "docker exec -it postgres psql -U user -d healthApp"
