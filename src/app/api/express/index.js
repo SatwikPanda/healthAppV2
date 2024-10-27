@@ -70,7 +70,7 @@ app.post('/appointments', async (req, res) => {
     }
   });
 
-  // 4.5) Delete an appointment by id
+  // 4.5) Delete an appointments
   app.delete('/appointments/:id', async (req, res) => {
     const { id } = req.params;
     try {
@@ -120,7 +120,17 @@ app.post('/appointments', async (req, res) => {
     }
   });
   
-  
+  // 6.5) Delete a doctor
+  app.delete('/doctors/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+      const result = await pool.query('DELETE FROM doctors WHERE id = $1 RETURNING *', [id]);
+      if (result.rows.length === 0) return res.status(404).json({ error: 'Doctor not found' });
+      res.json(result.rows[0]);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  });
   
   // 7) Fetch all appointment details
   app.get('/appointments', async (req, res) => {
@@ -147,7 +157,90 @@ app.post('/appointments', async (req, res) => {
       res.status(500).json({ error: err.message });
     }
   });
-  
+  //For submiting the changes made to the doctor
+  app.put('/doctors/:id', async (req, res) => {
+    const { id } = req.params;
+    const { name, specialization, photo, experience } = req.body;
+
+    try {
+        const result = await pool.query(
+            `UPDATE doctors 
+             SET name = $1, specialization = $2, photo = $3, experience = $4 
+             WHERE id = $5 RETURNING *`,
+            [name, specialization, photo, experience, id]
+        );
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: "Doctor not found" });
+        }
+
+        res.json({ message: "Doctor updated successfully", doctor: result.rows[0] });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: "Server error" });
+    }
+  });
+  //To post the password to the doc_auth table
+  app.post('/doctors/:id/password', async (req, res) => {
+    const { id } = req.params;
+    const { password } = req.body;
+
+    try {
+        const result = await pool.query(
+            `INSERT INTO doc_auth (id, password) VALUES ($1, $2)
+             ON CONFLICT (id) DO UPDATE SET password = $2 RETURNING *`,
+            [id, password]
+        );
+
+        res.status(201).json({ message: "Password set successfully", doc_auth: result.rows[0] });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: "Server error" });
+    }
+  });
+  //To get the password from the doc_auth table
+  app.get('/doctors/:id/password', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const result = await pool.query(`SELECT password FROM doc_auth WHERE id = $1`, [id]);
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: "Doctor not found" });
+        }
+
+        res.status(200).json({ password: result.rows[0].password });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: "Server error" });
+    }
+  });
+  //put api to update the password
+  app.put('/doctors/:id/password', async (req, res) => {
+    const { id } = req.params;
+    const { password } = req.body;
+
+    try {
+        // Check if the doctor already has a password entry in doc_auth
+        const doctorExists = await pool.query(`SELECT * FROM doc_auth WHERE id = $1`, [id]);
+
+        if (doctorExists.rows.length === 0) {
+            return res.status(404).json({ error: "Doctor not found or password not set" });
+        }
+
+        // Update the password for the doctor in doc_auth
+        const result = await pool.query(
+            `UPDATE doc_auth SET password = $1 WHERE id = $2 RETURNING *`,
+            [password, id]
+        );
+
+        res.status(200).json({ message: "Password updated successfully", doc_auth: result.rows[0] });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: "Server error" });
+    }
+  });
+
   // 9) Fetch all appointments under a specific doctor
   app.get('/doctors/:id/appointments', async (req, res) => {
     const { id } = req.params;

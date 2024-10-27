@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "concurrently \"npm run dev:next\" \"npm run dev:express\"",
+    "dev:electron": "concurrently \"npm run dev:next\" \"npm run dev:electron-next\"",
     "dev:next": "next dev",
     "dev:express": "nodemon src/app/api/express/index.js",
-    "build": "next build",
+    "build": "next build && electron-builder",
     "start": "next start",
     "lint": "next lint",
     "db": "docker exec -it postgres psql -U user -d healthApp"
@@ -31,6 +32,7 @@
     "lucide-react": "^0.453.0",
     "next": "14.2.15",
     "nodemon": "^3.1.7",
+    "open": "^10.1.0",
     "pg": "^8.13.0",
     "pg-format": "^1.0.4",
     "react": "^18",

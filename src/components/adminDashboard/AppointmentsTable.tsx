@@ -108,13 +108,22 @@ const AppointmentsTable = ({ isAppointments, setIsPatient, setSelectedPatient }:
                                 <td className="p-3">{appointment.problems || 'N/A'}</td>
                                 <td className="p-3">
                                     <select
+                                        key={statuses[appointment.id]}
                                         value={statuses[appointment.id]}
                                         onClick={(e) => e.stopPropagation()}
                                         onChange={(e) => setStatuses((prev) => ({
                                             ...prev,
                                             [appointment.id]: e.target.value
                                         }))}
-                                        className={`bg-neutral-900 border border-neutral-800 p-1 rounded text-white ${statuses[appointment.id] === 'Rejected' ? 'text-red-500' : statuses[appointment.id] === 'Accepted' ? 'text-green-500' : 'text-yellow-500'}`}
+                                        className={`bg-neutral-900 border border-neutral-800 p-1 rounded text-white`}
+                                        style={{
+                                            color:
+                                                statuses[appointment.id] === 'Rejected'
+                                                    ? '#EF4444' // Tailwind's red-500
+                                                    : statuses[appointment.id] === 'Accepted'
+                                                    ? '#22C55E' // Tailwind's green-500
+                                                    : '#EAB308', // Tailwind's yellow-500
+                                                }}
                                     >
                                         <option value="Pending">Pending</option>
                                         <option value="Accepted">Accepted</option>
@@ -152,7 +161,7 @@ const AppointmentsTable = ({ isAppointments, setIsPatient, setSelectedPatient }:
                     </tbody>
                 </table>
             ) : (
-                <p className="text-center mt-10">No appointments found.</p>
+                <p className="mt-10">No appointments found.</p>
             )}
         </div>
     );

@@ -58,7 +58,7 @@ const PatientCard = ({ PatientId, setIsPatient }:{ PatientId: string, setIsPatie
     }, [appointment.doctor_id]);  // Run only when doctor_id is set
 
     return (
-        <div className="w-full h-full absolute top-0 left-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">
+        <div className="w-full h-[100vh] absolute top-0 left-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">
             <div className="border bg-black border-neutral-800 p-7 rounded-lg min-w-fit">
                 <form className="flex flex-col gap-4">
                     <div className="flex gap-4 items-center justify-between">
