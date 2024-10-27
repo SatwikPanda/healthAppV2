@@ -1,0 +1,6 @@
+appId: "io.github.aryansh.docapp"
+productName: "Electron Next.JS"
+copyright: "Copyright (c) 2024 Aryansh"
+win:
+  target: ["dir", "portable", "zip"]
+  icon: "public/medical-team.png"

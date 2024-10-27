@@ -36,12 +36,12 @@ const DoctorCards = ({ onDoctorSelect }:{ onDoctorSelect: (doctorId: string) => 
             {doctors.map((doctor) => (
                 <div
                     key={doctor.id} // Ensure unique key for each doctor
-                    className="border rounded-lg p-4 shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
+                    className="border border-neutral-700 rounded-lg p-4 shadow-lg hover:bg-neutral-600/50 transition cursor-pointer"
                     onClick={() => handleDoctorSelect(doctor.id)} // Handle doctor selection
                 >
                     <img src={doctor.photo} alt={`${doctor.name}'s photo`} className="w-full h-32 object-cover rounded-md mb-2" />
                     <h3 className="text-lg font-bold">{doctor.name}</h3>
-                    <p className="text-sm text-gray-500">{doctor.specialization}</p>
+                    <p className="text-sm text-neutral-400">{doctor.specialization}</p>
                 </div>
             ))}
         </div>

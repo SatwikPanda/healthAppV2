@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 
+import { FaAngleLeft } from "react-icons/fa";
+
 axios.defaults.baseURL = 'http://localhost:5000';
 
 const DoctorIdPage = () => {
@@ -74,16 +76,19 @@ const DoctorIdPage = () => {
     };
 
     return (
-        <div className="min-h-screen flex flex-col items-center p-4 w-full">
+        <div className="min-h-screen flex flex-col bg-black items-center relative justify-center p-4 w-full">
+            <div onClick={() => router.back()} className="absolute top-4 left-4 cursor-pointer text-white p-2 text-2xl hover:bg-neutral-700/50 rounded-md">
+                <FaAngleLeft />
+            </div>
             {/* Appointment Form */}
-            <form onSubmit={handleAppointmentSubmit} className="w-full max-w-xl mt-6 space-y-4 border p-4 rounded shadow-lg bg-white">
+            <form onSubmit={handleAppointmentSubmit} className="w-full max-w-md shadow-[0_4px_200px_rgba(255,255,255,0.1)] mt-6 space-y-4 border border-neutral-800 p-4 rounded-md bg-black text-white">
                 <h2 className="text-2xl font-semibold">Book an Appointment</h2>
 
                 <div>
                     {loading ? (
                         <p>Loading...</p>
                     ) : doctor ? (
-                        <div className="w-full border border-neutral-300 flex items-center px-2 py-2 gap-2 rounded-lg">
+                        <div className="w-full border border-neutral-700 bg-neutral-900 flex items-center px-2 py-2 gap-2 rounded-lg">
                             <img src={doctor.photo} alt="doctor photo" className="rounded-full border-2 border-black w-[2.5rem]" />
                             <div>
                                 <h3 className="text-xl tracking-tighter">{doctor.name}</h3>
@@ -102,7 +107,7 @@ const DoctorIdPage = () => {
                         value={patientName}
                         onChange={(e) => setPatientName(e.target.value)}
                         required
-                        className="w-full border px-2 py-1 rounded"
+                        className="w-full border border-neutral-800 bg-black text-white px-2 py-1 rounded"
                     />
                 </div>
 
@@ -113,7 +118,7 @@ const DoctorIdPage = () => {
                         value={patientAge}
                         onChange={(e) => setPatientAge(e.target.value)}
                         required
-                        className="w-full border px-2 py-1 rounded"
+                        className="w-full border border-neutral-800 bg-black text-white px-2 py-1 rounded"
                     />
                 </div>
 
@@ -122,7 +127,7 @@ const DoctorIdPage = () => {
                     <textarea
                         value={patientHistory}
                         onChange={(e) => setPatientHistory(e.target.value)}
-                        className="w-full border px-2 py-1 rounded resize-none h-[10vh]"
+                        className="w-full border border-neutral-800 bg-black text-white px-2 py-1 rounded resize-none h-[10vh]"
                     />
                 </div>
 
@@ -132,14 +137,14 @@ const DoctorIdPage = () => {
                         value={patientProblems}
                         onChange={(e) => setPatientProblems(e.target.value)}
                         required
-                        className="w-full border px-2 py-1 rounded resize-none h-[20vh]"
+                        className="w-full border px-2 border-neutral-800 bg-black text-white py-1 rounded resize-none h-[20vh]"
                     />
                 </div>
 
                 <button
                     type="submit"
                     disabled={formSubmitting}
-                    className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition"
+                    className="w-full bg-white text-black py-2 rounded hover:bg-neutral-500 transition"
                 >
                     {formSubmitting ? "Submitting..." : "Book Appointment"}
                 </button>

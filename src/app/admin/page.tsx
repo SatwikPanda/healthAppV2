@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import { FaAngleLeft } from "react-icons/fa";
 
 const AdminAuth = () => {
     const [eye, setEye] = useState(true);
@@ -22,7 +23,8 @@ const AdminAuth = () => {
     }
 
     return (
-        <div className="min-h-screen w-full flex items-center justify-center bg-black text-white">
+        <div className="min-h-screen w-full flex items-center relative justify-center bg-black text-white">
+            <div onClick={() => router.back()} className="absolute left-2 top-2 text-white text-xl cursor-pointer p-2 hover:bg-gray-700/50 rounded-md transition"><FaAngleLeft /></div>
             <form onSubmit={handleSubmit} className="flex flex-col gap-4 min-w-[25rem] border border-neutral-800 p-5 rounded bg-black">
                 <div>
                     <h1 className="text-4xl text-white tracking-tighter font-semibold">Password</h1>
